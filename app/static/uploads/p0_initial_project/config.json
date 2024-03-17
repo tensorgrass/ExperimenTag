@@ -1,0 +1,11 @@
+{
+    "images": [
+        {
+            "name": "empty.jpg",
+            "tags": {},
+            "height": 800,
+            "width": 600
+        }
+    ],
+    "version": "1.0.0"
+}

@@ -32,6 +32,12 @@ This is a simple Python Flask app designed for image tagging. It uses Bootstrap 
 First install python 3.10
 https://www.python.org/downloads/release/python-31013/
 
+```bash
+install.bat
+```
+
+Manual installation:
+
 To create a virtual environment in Python in a directory named `venv`, you can use the `venv` module that comes with Python 3. You can create the virtual environment using the following command in your terminal:
 In download project directory execute this:
 
@@ -62,8 +68,15 @@ To install the required libraries, navigate to the project directory and run the
 ```bash
 pip install -r requirements.txt
 ```
-After installation: (The before part only execute one time)
-To execute the application, run the following command:
+
+## Execution
+After installation (note that the preceding steps only need to be executed once), you can run the application by executing the following command:
+
+```bash
+run.bat
+```
+
+Manual execution:
 
 ```bash
 .\venv\Scripts\activate

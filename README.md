@@ -29,6 +29,33 @@ This is a simple Python Flask app designed for image tagging. It uses Bootstrap 
 - Share tags among similar images and calculate similarity using linear calculations.
 
 ## Installation
+First install python 3.10
+https://www.python.org/downloads/release/python-31013/
+
+To create a virtual environment in Python in a directory named `venv`, you can use the `venv` module that comes with Python 3. You can create the virtual environment using the following command in your terminal:
+In download project directory execute this:
+
+```bash
+python -m venv venv
+```
+
+This command creates a directory named `venv` (or whatever name you choose), where it installs a copy of the Python interpreter, the standard library, and various supporting files.
+
+Once you've created a virtual environment, you can activate it using the following command:
+
+On Windows:
+
+```bash
+.\venv\Scripts\activate
+```
+
+On Unix or MacOS:
+
+```bash
+source venv/bin/activate
+```
+
+After activating the virtual environment, your shell prompt will change to show the name of the activated environment. In this environment, you can use `pip` to install packages that will be local to this environment.
 
 To install the required libraries, navigate to the project directory and run the following command:
 

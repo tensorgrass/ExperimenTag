@@ -1,0 +1,9 @@
+{
+    "version": "1.0.0",
+    "next_project": 4,
+    "projects": {
+        "p0_initial_project": {
+            "name": "Initial project"
+        }
+    }
+}

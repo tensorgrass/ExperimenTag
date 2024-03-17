@@ -1,0 +1,5 @@
+{
+    "status": "error",
+    "data": null, /* or optional error payload */
+    "message": "Error xyz has occurred"
+  }

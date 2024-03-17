@@ -1,0 +1,234 @@
+{% extends 'general/base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/image_tag.css')}}" />
+
+<script src="{{url_for('static', filename='js/DelayCall.js')}}"></script>
+<script src="{{url_for('static', filename='js/ImgTagData.js')}}"></script>
+<script src="{{url_for('static', filename='js/image_tag.js')}}"></script>
+{% endblock %}
+
+{% block toolbar %}
+<div id="div_buttons">
+    <span>
+        <a id="btn_maximize_window" title="Maximize window" href="#" class="d-none d-sm-inline-block btn  btn-primary shadow-sm"  >
+            <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+        </a>
+        <a id="btn_minimize_window" title="Minimize window" href="#" class="d-none d-sm-inline-block btn  btn-primary shadow-sm"  >
+            <i class="fa-solid fa-down-left-and-up-right-to-center"></i>
+        </a>
+        <a id="btn_zoom_out" title="Zoom out" href="#" class="d-none d-sm-inline-block btn  btn-primary shadow-sm"  >
+            <i class="fa-solid fa-magnifying-glass-minus"></i>
+        </a>
+        <input id="input_zoom_value" title="Zoom in" type="text" value="100" disabled="disabled" />
+        <a id="btn_zoom_in" href="#" class="d-none d-sm-inline-block btn  btn-primary shadow-sm"  >
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+        </a>
+        <a id="btn_previous" title="Previous image" href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm"  >
+            <i class="fa-solid fa-caret-left"></i>
+        </a>
+        <input id="input_img_number" type="text" value="1" disabled="disabled" />
+        <a id="btn_next" title="Next image" href="#" class="d-none d-sm-inline-block btn  btn-primary shadow-sm"  >
+            <i class="fa-solid fa-caret-right"></i>
+        </a>
+        <a id="btn_delete_tag" title="Delete tag" href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm"  >
+            <i class="fa-solid fa-trash-can"></i>
+            Delete
+        </a>
+        <a id="btn_save_tags" title="Save changes" href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm"  >
+            <i class="fa-solid fa-hard-drive"></i>
+            Save
+        </a>
+        <a id="btn_restore_tags" title="Cancel changes" href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm"  >
+            <i class="fa-solid fa-rectangle-xmark"></i>
+            Cancel
+        </a>
+        <div class="nav-item dropdown no-arrow" style="display: inline-block;">
+            <a class="d-none d-sm-inline-block btn btn-primary shadow-sm" href="#" id="userDropdown" role="button"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa-solid fa-shop" title="Utils"></i>
+                Utils
+            </a>
+            <!-- Dropdown - User Information -->
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                aria-labelledby="userDropdown">
+                <a id="btn_add_image_at_the_end" class="dropdown-item" href="{{ url_for('project.upload_images_selection', project_id=project_id) }}">
+                    <i class="fa-solid fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Add image at the end
+                </a>
+                <a id="btn_delete_current_image" class="dropdown-item">
+                    <i class="fa-solid fa-trash fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Delete current image
+                </a>
+            </div>
+        </div>
+        <div class="px-2 text-lg" href="#" style="display: inline-block;">
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+            <i class="fa-solid fa-image"></i>&nbsp;{{ project_id.split('_')[0] | replace("p","Project ") }}:&nbsp;{{ project_name }}</span>
+            </div>
+            
+        <!-- <button id="btn_restore_tags">Cancel changes</button> -->
+    </span>
+</div>
+{% endblock %}
+
+{% block content %}
+    <!-- Page Heading -->
+    <!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Image tag</h1>
+        <a id="btn_upload" href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" >
+            <i class="fa-solid fa-folder-plus fa-sm text-white-50"></i> 
+            Image tag
+        </a>
+    </div> -->
+    
+    <!-- Logout Modal-->
+    <div class="modal fade" id="modal_delete_image" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="label_delete_image">Delete image</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete the image "<b id="num_image_delete_image"></b>"?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a id="btn_popup_delete_current_image" class="btn btn-primary" href="#">
+                        Delete
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- List of links to the different sections of the application in blueprint-->
+    <div id="main_scroll_img" class="area">
+        <div id="div_loading">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+              Error loading...
+        </div>
+        <div id="div_container">
+        </div>
+        
+        <img id="image_to_tag" class="image_to_tag" src="" />
+        <div id="pointer_box" style="display: none; border: 1px solid blue; width: 2px; height: 2px; z-index: 999; position: absolute;"></div>
+        <div id="margin_box" style="display: none; z-index: 4; position: absolute;"></div>
+        <div id="border_box" style="display: none; z-index: 5; position: absolute;"></div>
+    </div>
+    <div id="main_scroll_grid" class="area">
+        <div id="div_grid_tags_name">
+            <table id="table_grid_tags_names">
+            </table>
+        </div>
+        <div id="div_scroll_grid">
+            <table id="table_grid">
+            </table>
+        </div>
+    </div>
+    <div id="tag_detail">
+        <!-- <div id="tag_detail_title">
+            <h3>Tag detail</h3>
+        </div> -->
+        <div class="tag_detail_content">
+            <div class="tag_detail_content">
+                <span>
+                    <span class="tag_detail_title_field">Tag name:</span>
+                    <input id="input_tag_detail_name" type="text" value="tag_" disabled="disabled" />
+                </span>
+                <span>
+                    <span class="tag_detail_title_field">Class:</span>
+                    <input id="input_tag_detail_class" type="text" value="" />
+                </span>
+            </div>
+            <span>
+                <span class="tag_detail_title_field">Active:</span>
+                <input id="input_tag_detail_active" type="checkbox" />
+            </span>
+            <div class="tag_detail_content">
+                <span>
+                    <span class="tag_detail_title_field">Tag type:</span>
+                    <select id="select_tag_detail_tag_type">
+                        <option value="single">Single</option>
+                        <option value="linear">Linear</option>
+                    </select>
+                </span>
+                <span>
+                    <span class="tag_detail_title_field">Calculated:</span>
+                    <input id="input_tag_detail_multiple_calculated" type="checkbox" />
+                </span>
+                <span>
+                    <span class="tag_detail_title_field">Initial tag:</span>
+                    <input id="input_tag_detail_multiple_initial" type="checkbox" />
+                </span>
+                <span>
+                    <span class="tag_detail_title_field">Final tag:</span>
+                    <input id="input_tag_detail_multiple_final" type="checkbox" />
+                </span>
+            </div>
+            <div class="tag_detail_content">
+                <span>
+                    <span class="tag_detail_title_field">Selected:</span>
+                    <input id="input_tag_detail_color_selected" type="color" value="#FFFFFF"/>
+                </span>
+                <span>
+                    <span class="tag_detail_title_field">Unselected:</span>
+                    <input id="input_tag_detail_color_unselected" type="color" value="#008000"/>
+                </span>
+            </div>
+            <div class="tag_detail_content">
+                <span>
+                    <span class="tag_detail_title_field">Top:</span>
+                    <input id="input_tag_detail_top" class="tag_detail_image_size" type="text" value="0" disabled="disabled" />
+                </span>
+                <span>
+                    <span class="tag_detail_title_field">Left:</span>
+                    <input id="input_tag_detail_left" class="tag_detail_image_size" type="text" value="0" disabled="disabled" />
+                </span>
+            </div>
+            <div class="tag_detail_content">
+                <span>
+                    <span class="tag_detail_title_field">Widh:</span>
+                    <input id="input_tag_detail_width" class="tag_detail_image_size" type="text" value="0" disabled="disabled" />
+                </span>
+                <span>
+                    <span class="tag_detail_title_field">Height:</span>
+                    <input id="input_tag_detail_height" class="tag_detail_image_size" type="text" value="0" disabled="disabled" />
+                </span>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block bottom %}
+<script>
+    // load_first_image
+    var URL_IMAGE = "{{ url_for('image_tag.image_rest', project_id=project_id, id='0') }}";
+    var URL_TAGS = "{{ url_for('image_tag.tags_rest', project_id=project_id) }}";
+    var URL_STATIC = "{{ url_for('static', filename='') }}";
+    var URL_STATIC_IMAGE = "{{ url_for('static', filename='uploads/' + project_id) }}";
+
+    $(document).ready(function() {
+        on_load_document();
+        load_image_tag();
+    });
+
+    function on_load_document() {
+        $("#sidebarToggle").click();
+        $( "#btn_upload" ).on( "click", function() {
+            $( "#form_upload" ).trigger( "submit" );
+        } );
+    }
+
+
+</script>
+{% endblock %}
+

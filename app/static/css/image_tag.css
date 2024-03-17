@@ -1,0 +1,199 @@
+#div_buttons {
+    top: 0;
+    left: 0;
+    padding: 5px 0px;
+    margin: 0;
+}
+
+#input_zoom_value, #input_img_number {
+    width: 45px;
+}
+
+/*
+Main div for tag the image
+The height of this div is fixed
+The width of this div is 100% of the screen
+*/
+#main_scroll_img {
+    position: relative;
+    overflow-y: scroll;
+    height: 300px;
+    width: 100%;
+    /*position: absolute;
+    top: 0;
+    left: 0;*/
+    padding: 0;
+    margin: 0;
+    border: 0;
+
+}
+
+/*
+Div modal that all the elements are behind this div
+z-index: 1000
+width: 100% of the screen
+height: set by the size of the image with javascript
+*/
+#div_container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    padding: 0;
+    margin: 0;
+    z-index: 1000;
+    background-color: yellow;
+    opacity: 0.1;
+}
+
+.sidebar.toggled .nav-item .collapse.show {
+    z-index: 1001;
+}
+
+/*
+image that is going to be tagged
+*/
+.image_to_tag {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    /* z-index: 2; */
+   /* display:none;*/
+}
+
+/*
+Div that of the tag
+*/
+.div_tag {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    z-index: 3;
+}
+
+.div_tag_unselected {
+    border-style: solid;
+    border-color: white;
+}
+
+.div_tag_selected {
+    border-style: solid;
+    border-color: green;
+}
+
+#table_grid {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#main_scroll_grid {
+    display: flex;
+    /* overflow-x: scroll; */
+}
+
+#div_grid_tags_name {
+    float: left; 
+}
+
+#div_scroll_grid {
+    width: 100%;
+    float: left; 
+    overflow-x: scroll;
+}
+
+.td_grid_group_num_img {
+    border: 1px solid black;
+    padding: 0;
+    margin: 0;
+    font-size: 10px;
+    line-height: 12px;
+    font-weight: bold;
+}
+
+.td_grid_num_img {
+    border: 1px solid black;
+    padding: 0;
+    margin: 0;
+    line-height: 20px;
+    text-align: center;
+}
+
+.td_grid_num_img.td_grid_num_img_current_image{
+    background-color: #4e73df;
+    color: white;
+}
+
+.td_grid {
+    border: 1px solid black;
+    padding: 0;
+    margin: 0;
+}
+
+.td_grid.td_grid_tag_name {
+    font-size: 12px;
+    padding: 0px 2px;
+    color: white;
+    background-color: #4e73df;
+}
+
+.td_grid.td_grid_tag_name.td_grid_set_selected {
+    background-color: #0004ff;
+}
+
+.td_grid_set {
+    background-color: #9fbeff;
+    color: black;
+}
+
+.td_grid.td_grid_current_image {
+    background-color: #4e73df;
+    color: white;
+}
+
+.td_grid.td_grid_current_image.td_grid_set_selected {
+    background-color: #0004ff;
+}
+
+.a_grid {
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.div_grid {
+    height: 18px;
+    width: 12px;
+    border: 0;
+    padding: 3px 0 0 0;
+    margin: 0;
+
+    font-size: 10px;
+    text-align: center;
+
+}
+
+
+
+
+/****************************************/
+/************ TAG DETAIL ****************/
+/****************************************/
+.tag_detail_image_size {
+    width: 40px;    
+}
+
+.tag_detail_content {
+    margin: 2px;
+}
+.tag_detail_title_field {
+    display: inline-block;
+    width: 80px;
+    text-align: right;
+}

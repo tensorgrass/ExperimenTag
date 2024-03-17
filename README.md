@@ -62,12 +62,19 @@ To install the required libraries, navigate to the project directory and run the
 ```bash
 pip install -r requirements.txt
 ```
-
+After installation: (The before part only execute one time)
 To execute the application, run the following command:
+
+```bash
+.\venv\Scripts\activate
+```
 
 ```bash
 python app.py
 ```
+At the end on the browser:
+
+http://127.0.0.1:5000
 
 ## Technical Specifications
 - **Framework**: Python 3.10.10 Flask 1.1.2

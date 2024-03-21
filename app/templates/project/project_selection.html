@@ -1,0 +1,190 @@
+{% extends 'general/base.html' %}
+
+{% block toolbar %}
+{% endblock %}
+
+{% block content %}
+
+    <!-- New Modal-->
+    <div class="modal fade" id="new_project_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="new_project_modal_label">Select the name of the new project</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input id="new_project_name" class="form-control" type="text" placeholder="Name of the new project">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a id="btn_new_project" class="btn btn-primary" href="#">
+                        Accept
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal-->
+    <div class="modal fade" id="edit_project_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="edit_project_modal_label">Edit the name of the new project</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input id="edit_project_name" class="form-control" type="text" placeholder="Name of the new project">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a id="btn_popup_edir_project" class="btn btn-primary" href="#">
+                        Accept
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal-->
+    <div class="modal fade" id="delete_project_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="delete_project_modal_label">Delete project</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete the project "<b id="delete_project_name"></b>"?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a id="btn_popup_delete_project" class="btn btn-primary" href="#">
+                        Delete
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty Modal-->
+    <div class="modal fade" id="empty_project_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete project</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to empty the project "<b id="empty_project_name"></b>"?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a id="btn_popup_empty_project" class="btn btn-primary" href="#" >
+                        Empty
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">{{ title }} project selection</h1>
+        {% if editable %}
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" 
+           data-toggle="modal"  data-target="#new_project_modal">
+            <i class="fa-solid fa-folder-plus fa-sm text-white-50"></i> 
+            New project
+        </a>
+        {% endif %}
+    </div>
+
+    <script type="text/javascript">
+        //Create an empty hashmap named url_delete_project
+        var url_edit_project = {};
+        var url_delete_project = {};
+        //Create an empty hashmap named url_empty_project
+        var url_empty_project = {};
+    </script>
+
+    <!-- jinja 2 iterate througt name_directories list -->
+    {% for project in projects %}
+
+        <div class="card border-left-primary shadow h-100 py-2 mt-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            {{ project["num_images"] }} images
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            {% set title_project = project["id"].split('_')[0] | replace("p","Project ") + ": " +  project["name"] %}
+                            {% if project['error']  %}
+                                <a href="#" onClick='alert("{{ project['error_message'] }}")'>{{ title_project }}</a>
+                            {% else %}
+                                <a href="{{ project['url_destination'] }}">{{ title_project }}</a>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        {% if editable and not (project['id'] == "p0_initial_project") %}
+                        <a onclick="on_edit_project(event, '{{ project['id'] }}', '{{ project['name'] }}');" title="Edit project" >
+                            <i class="fa-solid fa-pen fa-2x text-gray-300"></i>
+                        </a>
+                        <a onclick="on_empty_project(event, '{{ project['id'] }}', '{{ project['name'] }}');" title="Empty project">
+                            <i class="fa-solid fa-eraser fa-2x text-gray-300"></i>
+                        </a>
+                        <a onclick="on_delete_project(event, '{{ project['id'] }}', '{{ project['name'] }}');" title="Delete project">
+                            <i class="fa-solid fa-trash fa-2x text-gray-300"></i>
+                        </a>
+
+                        <script type="text/javascript">
+                            //Add the url to delete the project to the hashmap url_delete_project
+                            url_edit_project["{{ project['id'] }}"] = "{{ url_for('project.manage_project_rest', project_id=project['id']) }}";
+                            url_delete_project["{{ project['id'] }}"] = "{{ url_for('project.manage_project_rest', project_id=project['id']) }}";
+                            //Add the url to empty the project to the hashmap url_empty_project
+                            url_empty_project["{{ project['id'] }}"] = "{{ url_for('project.manage_project_empty_rest', project_id=project['id']) }}";
+                        </script>
+                        
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+{% endblock %}
+
+{% block bottom %}
+<script src="{{ url_for('static', filename='js/project_selection.js') }}"></script>
+<script type="text/javascript">
+    URL_PROJECT = "{{ url_for('project.manage_project_rest', project_id='') }}";
+
+    $(document).ready(function() {
+        on_load_document();
+    });
+    
+    function on_load_document() {
+        $("#sidebarToggle").click();
+        $("#btn_new_project").click(function() {
+            new_project(event);
+        });
+    }
+
+</script>
+{% endblock %}

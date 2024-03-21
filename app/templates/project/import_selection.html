@@ -1,0 +1,96 @@
+{% extends 'general/base.html' %}
+
+{% block toolbar %}
+{% endblock %}
+
+{% block content %}
+    <!-- Result modal-->
+    <div class="modal fade" id="result_modal" tabindex="-1" role="dialog" aria-labelledby="modalResultLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalResultLabel">Result of the image uploaded</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Imported <span id="num_added_images"></span> images.
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Import&nbsp;{{ format }}:&nbsp;{{ project_id.split('_')[0] | replace("p","Project ") }}:&nbsp;{{ project_name }}</h1>
+        <a id="btn_upload"
+           href="#" 
+           class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"  >
+            <i class="fa-solid fa-folder-plus fa-sm text-white-50"></i> 
+            Import project
+        </a>
+    </div>
+
+    <form id="form_upload" name="form_upload" action="" method="POST" enctype="multipart/form-data">
+        <div class="card border-left-primary shadow h-100 py-2 mt-2" {% if not zip_import %}style="display: none;"{% endif %} >
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Upload zip file
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <input type="file" name="input_file_upload" id="input_file_upload"/>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-solid fa-image fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card border-left-success shadow h-100 py-2 mt-2" {% if zip_import %}style="display: none;"{% endif %}>
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Upload directory of images
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <input type="file" name="input_directory_upload" id="input_directory_upload" webkitdirectory directory multiple/>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-solid fa-folder-open fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+{% endblock %}
+
+{% block bottom %}
+    <script src="{{ url_for('static', filename='js/upload_images.js') }}"></script>
+    <script type="text/javascript">
+        const URL_UPLOAD_CHECK = "{{ url_for('project.import_check_before_upload_rest', format=format, project_id=project_id) }}"
+        const URL_UPLOAD_FILE = "{{ url_for('project.import_file_rest', format=format, project_id=project_id) }}"
+        const URL_UPLOAD_TAG_IMAGES = "{{ url_for('project.import_tag_images', format=format, project_id=project_id) }}"
+        {% if zip_import %}
+            const UPDATE_TYPE = UPDATE_TYPE_IMPORT_ZIP;
+        {% else %}
+            const UPDATE_TYPE = UPDATE_TYPE_IMPORT;
+        {% endif %}
+
+        $(document).ready(function() {
+            on_load_document();
+        });
+
+    </script>
+{% endblock %}

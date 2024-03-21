@@ -1,0 +1,113 @@
+{% extends 'general/base.html' %}
+
+{% block toolbar %}
+{% endblock %}
+
+{% block content %}
+
+    <!-- Result modal-->
+    <div class="modal fade" id="result_modal" tabindex="-1" role="dialog" aria-labelledby="modalResultLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalResultLabel">Result of the image uploaded</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Added <span id="num_added_images"></span> images and updated <span id="num_updated_images"></span> images.
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Upload images:&nbsp;{{ project_id.split('_')[0] | replace("p","Project ") }}:&nbsp;{{ project_name }}</h1>
+        <a id="btn_upload"
+           href="#" 
+           class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"  >
+            <i class="fa-solid fa-folder-plus fa-sm text-white-50"></i> 
+            Upload images
+        </a>
+    </div>
+
+    <form id="form_upload" action="" method="POST" enctype="multipart/form-data">
+        <div class="card border-left-primary shadow h-100 py-2 mt-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Upload one image
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <input type="file" name="input_file_upload" id="input_file_upload"/>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-solid fa-image fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card border-left-success shadow h-100 py-2 mt-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Upload directory of images
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <!-- <input type="file" name="uploaded_multiple_photos" webkitdirectory multiple/> -->
+                            <input type="file" name="input_directory_upload" id="input_directory_upload" webkitdirectory directory multiple/>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-solid fa-folder-open fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card border-left-info shadow h-100 py-2 mt-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            Action:
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                              <input type="radio" id="radio_keep_tags" name="action_tags" value="keep_tags" checked>
+                              <label for="keep_tags">Maintain image tags</label><br>
+                              <input type="radio" id="radio_clear_tags" name="action_tags" value="clear_tags">
+                              <label for="clear_tags">Clear all image tags</label>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-solid fa-tags fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block bottom %}
+    <script src="{{ url_for('static', filename='js/upload_images.js') }}"></script>
+    <script type="text/javascript">
+        const URL_UPLOAD_CHECK = "{{ url_for('project.upload_images_check_before_upload', project_id=project_id) }}"
+        const URL_UPLOAD_FILE = "{{ url_for('project.upload_images_file_rest', project_id=project_id) }}"
+        const URL_UPLOAD_TAG_IMAGES = "{{ url_for('project.upload_images_tag_images_rest', project_id=project_id) }}"
+        const UPDATE_TYPE = UPDATE_TYPE_IMAGES;
+
+        $(document).ready(function() {
+            on_load_document();
+        });
+
+    </script>
+{% endblock %}

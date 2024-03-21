@@ -1,0 +1,101 @@
+{% extends 'general/base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='loadingmodal/css/jquery.loadingModal.css')}}" />
+
+<script src="{{url_for('static', filename='loadingmodal/js/jquery.loadingModal.js')}}"></script>
+{% endblock %}
+
+{% block toolbar %}
+{% endblock %}
+
+{% block content %}
+
+    <!-- Result modal-->
+    <div class="modal fade" id="result_modal" tabindex="-1" role="dialog" aria-labelledby="modalResultLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalResultLabel">Result of the image uploaded</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Generated <span id="num_added_images"></span> images from video.
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Upload video:&nbsp;{{ project_id.split('_')[0] | replace("p","Project ") }}:&nbsp;{{ project_name }}</h1>
+        <a id="btn_upload"
+           href="#" 
+           class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"  >
+            <i class="fa-solid fa-folder-plus fa-sm text-white-50"></i> 
+            Upload video
+        </a>
+    </div>
+
+    <form id="form_upload" method="POST" enctype="multipart/form-data">
+        <div class="card border-left-primary shadow h-100 py-2 mt-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Upload one image
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <input type="file" name="input_file_upload" id="input_file_upload"/>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-solid fa-image fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card border-left-info shadow h-100 py-2 mt-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            Action:
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                              <input type="radio" id="radio_keep_tags" name="action_tags" value="keep_tags" checked>
+                              <label for="keep_tags">Maintain image tags</label><br>
+                              <input type="radio" id="radio_clear_tags" name="action_tags" value="clear_tags">
+                              <label for="clear_tags">Clear all image tags</label>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa-solid fa-tags fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block bottom %}
+    <script src="{{ url_for('static', filename='js/upload_images.js') }}"></script>
+    <script type="text/javascript">
+        const URL_UPLOAD_CHECK = "{{ url_for('project.upload_video_check_before_upload', project_id=project_id) }}"
+        const URL_UPLOAD_FILE = "{{ url_for('project.upload_video_file_rest', project_id=project_id) }}"
+        const URL_UPLOAD_TAG_IMAGES = "{{ url_for('project.upload_video_tag_images_rest', project_id=project_id) }}"
+        const UPDATE_TYPE = UPDATE_TYPE_VIDEO;
+
+        $(document).ready(function() {
+            on_load_document();
+        });
+
+    </script>
+{% endblock %}

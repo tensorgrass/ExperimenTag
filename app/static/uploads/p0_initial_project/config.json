@@ -1,0 +1,68 @@
+{
+    "images": [
+        {
+            "name": "empty.jpg",
+            "tags": {
+                "tag_001": {
+                    "tag_type": "single",
+                    "active": true,
+                    "multi_calc": false,
+                    "multi_ini": false,
+                    "multi_fin": false,
+                    "left": 497,
+                    "top": 52,
+                    "width": 92,
+                    "height": 86,
+                    "class": "",
+                    "color_selected": "#008000",
+                    "color_unselected": "#FFFFFF"
+                },
+                "tag_002": {
+                    "tag_type": "single",
+                    "active": true,
+                    "multi_calc": false,
+                    "multi_ini": false,
+                    "multi_fin": false,
+                    "left": 247,
+                    "top": 99,
+                    "width": 122,
+                    "height": 30,
+                    "class": "",
+                    "color_selected": "#008000",
+                    "color_unselected": "#FFFFFF"
+                },
+                "tag_003": {
+                    "tag_type": "single",
+                    "active": true,
+                    "multi_calc": false,
+                    "multi_ini": false,
+                    "multi_fin": false,
+                    "left": 412,
+                    "top": 185,
+                    "width": 17,
+                    "height": 40,
+                    "class": "",
+                    "color_selected": "#008000",
+                    "color_unselected": "#FFFFFF"
+                },
+                "tag_004": {
+                    "tag_type": "single",
+                    "active": true,
+                    "multi_calc": false,
+                    "multi_ini": false,
+                    "multi_fin": false,
+                    "left": 458,
+                    "top": 261,
+                    "width": 105,
+                    "height": 16,
+                    "class": "",
+                    "color_selected": "#008000",
+                    "color_unselected": "#FFFFFF"
+                }
+            },
+            "height": 800,
+            "width": 600
+        }
+    ],
+    "version": "1.0.0"
+}
